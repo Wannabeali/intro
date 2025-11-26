@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ali Qureshi | PHP Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary: #10b981;
+            --dark: #1f2937;
+            --light: #f9fafb;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 3rem;
+            font-weight: 700;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .floating-card {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .floating-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .skill-bar {
+            height: 10px;
+            background-color: #e5e7eb;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .skill-progress {
+            height: 100%;
+            border-radius: 5px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            position: relative;
+            transition: width 1.5s cubic-bezier(0.1, 0.7, 0.3, 1);
+            width: 0;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--primary);
+        }
+        
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 17px;
+            width: 2px;
+            height: calc(100% + 25px);
+            background-color: #e5e7eb;
+        }
+        
+        .timeline-item:last-child:after {
+            display: none;
+        }
+        
+        .project-filter-btn {
+            transition: all 0.3s ease;
+            border-radius: 30px;
+            padding: 8px 20px;
+        }
+        
+        .project-filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3.5s steps(40, end);
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, 15px); }
+            100% { transform: translate(0, -0px); }
+        }
+        
+        .counter {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .contact-input {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+        
+        .contact-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 50px;
+            border: 2px solid white;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+        
+        .scroll-indicator:before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 10px;
+            background-color: white;
+            border-radius: 2px;
+            animation: scroll 2s infinite;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(20px); opacity: 0; }
+        }
+        
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            z-index: 9998;
+            transition: width 0.2s ease;
+        }
+        
+        .profile-image {
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader"></div>
+    </div>
+    
+    <!-- Progress Bar -->
+    <div class="progress-bar"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-500 py-4 bg-white shadow-md">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="text-2xl font-bold text-blue-600">Ali Qureshi</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link text-gray-700 font-medium">Home</a>
+                <a href="#about" class="nav-link text-gray-700 font-medium">About</a>
+                <a href="#skills" class="nav-link text-gray-700 font-medium">Skills</a>
+                <a href="#experience" class="nav-link text-gray-700 font-medium">Experience</a>
+                <a href="#projects" class="nav-link text-gray-700 font-medium">Projects</a>
+                <a href="#education" class="nav-link text-gray-700 font-medium">Education</a>
+                <a href="#contact" class="nav-link text-gray-700 font-medium">Contact</a>
+                <a href="#" id="download-resume" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition duration-300">
+                    <i class="fas fa-download mr-2"></i>Resume
+                </a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-toggle" class="text-gray-700 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white mt-4 py-4 px-6 rounded-lg shadow-xl">
+            <a href="#home" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">Home</a>
+            <a href="#about" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">About</a>
+            <a href="#skills" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">Skills</a>
+            <a href="#experience" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">Experience</a>
+            <a href="#projects" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">Projects</a>
+            <a href="#education" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">Education</a>
+            <a href="#contact" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">Contact</a>
+            <a href="ALI_RESUME.pdf" id="download-resume-mobile" class="block py-2 text-blue-600 font-medium">
+                <i class="fas fa-download mr-2"></i>Download Resume
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen hero-gradient flex items-center relative overflow-hidden pt-20">
+        <div class="container mx-auto px-6 py-24 relative z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">Ali Qureshi</h1>
+                    <div class="text-2xl md:text-3xl text-white mb-6">
+                        <span id="typewriter" class="typewriter"></span>
+                    </div>
+                    <p class="text-xl text-white mb-8 max-w-lg">
+                        Innovative, task-driven developer with 2+ years of experience in web design and development. 
+                        Proficient in developing dynamic websites, creating user interfaces, and implementing cutting-edge solutions.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#projects" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold shadow-lg hover:bg-gray-100 transition duration-300 transform hover:-translate-y-1">
+                            View My Work
+                        </a>
+                        <a href="#contact" class="glass-effect text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:bg-opacity-20 transition duration-300 transform hover:-translate-y-1">
+                            Contact Me
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative">
+                        <div class="profile-image w-64 h-64 md:w-80 md:h-80 bg-white bg-opacity-20 rounded-full flex items-center justify-center overflow-hidden floating">
+                            <img src="newcover.png" 
+                                 alt="Ali Qureshi" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-6 -right-6 bg-yellow-400 text-gray-800 px-4 py-2 rounded-lg shadow-lg">
+                            <span class="font-bold">2+ Years</span> Experience
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator" id="scroll-indicator"></div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold section-title text-center w-full">About Me</h2>
+            <div class="flex flex-col md:flex-row gap-12 items-center">
+                <div class="md:w-1/2">
+                    <div class="bg-gradient-to-br from-blue-50 to-green-50 p-8 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">My Journey</h3>
+                        <p class="text-lg text-gray-600 mb-6">
+                            I am a dedicated PHP Developer with a strong background in web technologies. 
+                            My expertise includes developing dynamic websites, creating user interfaces, 
+                            writing and testing code, and implementing new features based on user feedback.
+                        </p>
+                        <p class="text-lg text-gray-600 mb-6">
+                            I have a proven track record of identifying and providing technological solutions 
+                            for companies through innovative approaches. My debugging skills and attention to 
+                            detail ensure that I deliver high-quality, bug-free applications.
+                        </p>
+                        <div class="grid grid-cols-2 gap-4 mt-8">
+                            <div class="text-center">
+                                <div class="counter" data-target="15">0</div>
+                                <p class="text-gray-600">Projects Completed</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="counter" data-target="2">0</div>
+                                <p class="text-gray-600">Years Experience</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Core Competencies</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                            <div class="flex items-center mb-2">
+                                <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-laptop-code text-blue-600"></i>
+                                </div>
+                                <h4 class="font-semibold text-gray-800">Web Development</h4>
+                            </div>
+                            <p class="text-gray-600 text-sm">Building responsive, dynamic websites with modern technologies</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                            <div class="flex items-center mb-2">
+                                <div class="bg-green-100 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-palette text-green-600"></i>
+                                </div>
+                                <h4 class="font-semibold text-gray-800">UI/UX Design</h4>
+                            </div>
+                            <p class="text-gray-600 text-sm">Creating intuitive and engaging user interfaces</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                            <div class="flex items-center mb-2">
+                                <div class="bg-purple-100 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-bug text-purple-600"></i>
+                                </div>
+                                <h4 class="font-semibold text-gray-800">Debugging</h4>
+                            </div>
+                            <p class="text-gray-600 text-sm">Identifying and resolving complex technical issues</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                            <div class="flex items-center mb-2">
+                                <div class="bg-yellow-100 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-lightbulb text-yellow-600"></i>
+                                </div>
+                                <h4 class="font-semibold text-gray-800">Problem Solving</h4>
+                            </div>
+                            <p class="text-gray-600 text-sm">Developing innovative solutions to technical challenges</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold section-title text-center w-full">Technical Skills</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-gray-700">PHP</span>
+                                <span class="font-semibold text-blue-600">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="90"></div>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-gray-700">HTML/CSS</span>
+                                <span class="font-semibold text-blue-600">95%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="95"></div>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-gray-700">JavaScript/jQuery</span>
+                                <span class="font-semibold text-blue-600">85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="85"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-gray-700">MySQL</span>
+                                <span class="font-semibold text-blue-600">88%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="88"></div>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-gray-700">Bootstrap</span>
+                                <span class="font-semibold text-blue-600">92%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="92"></div>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-gray-700">Tailwind CSS</span>
+                                <span class="font-semibold text-blue-600">80%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="80"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold section-title text-center w-full">Work Experience</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="floating-card bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl shadow-lg border border-blue-100">
+                    <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
+                        <h3 class="text-2xl font-bold text-blue-600">PHP Developer</h3>
+                        <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium mt-2 md:mt-0">02/2022 - Present</span>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-700 mb-4">Cepheisys Solutions</h4>
+                    <p class="text-gray-600 mb-6">
+                        Cepheisys Solutions is a web app development company that serves client needs and provides quality and productive work.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <span class="text-gray-700">Strong debugging skills and bug removal</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <span class="text-gray-700">Experience with Bootstrap framework</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <span class="text-gray-700">Proficient in HTML, CSS, JavaScript, and jQuery</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <span class="text-gray-700">Strong knowledge of MySQL database</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold section-title text-center w-full">Projects</h2>
+            
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="project-filter-btn active bg-blue-600 text-white" data-filter="all">All Projects</button>
+                <button class="project-filter-btn bg-white text-gray-700 shadow-md" data-filter="software">Software</button>
+                <button class="project-filter-btn bg-white text-gray-700 shadow-md" data-filter="dynamic">Dynamic Websites</button>
+                <button class="project-filter-btn bg-white text-gray-700 shadow-md" data-filter="static">Static Websites</button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="floating-card project-item bg-white rounded-xl overflow-hidden shadow-md border border-gray-100" data-category="software">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-gray-800">Stock Billing System</h4>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">08/2022 - Present</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            A billing software that generates prints with/without barcodes. Similar to billing inventory with accounts, it maintains records of goods purchased and sold, and generates dynamic reports.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">PHP</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">MySQL</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">Bootstrap</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="floating-card project-item bg-white rounded-xl overflow-hidden shadow-md border border-gray-100" data-category="software">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-gray-800">FAVOURITE</h4>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">12/2024 - Present</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            A Maritime Service Software used to manage service time and calculate amounts accordingly.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">PHP</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">JavaScript</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">MySQL</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="floating-card project-item bg-white rounded-xl overflow-hidden shadow-md border border-gray-100" data-category="software">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-gray-800">Stock Inventory Systems</h4>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">09/2022 - Present</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            A Stock Inventory System for managing stocks based on purchases and sales. Worked on creating the Expense Module.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">PHP</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">MySQL</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">jQuery</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dynamic Websites -->
+                <div class="floating-card project-item bg-white rounded-xl overflow-hidden shadow-md border border-gray-100" data-category="dynamic">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-gray-800">dayar-e-habib.com</h4>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Dynamic</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            Developed and maintained a dynamic website with interactive features and content management.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">PHP</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">MySQL</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="floating-card project-item bg-white rounded-xl overflow-hidden shadow-md border border-gray-100" data-category="dynamic">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-gray-800">alhamdtravels.net</h4>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Dynamic</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            Created a travel website with booking functionality, dynamic content, and user management.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">PHP</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">MySQL</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">jQuery</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="floating-card project-item bg-white rounded-xl overflow-hidden shadow-md border border-gray-100" data-category="static">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-gray-800">mashamanpower.com</h4>
+                            <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">Static</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            Created a static website for manpower services with clean, professional design and responsive layout.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">HTML</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">CSS</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold section-title text-center w-full">Education</h2>
+            <div class="max-w-3xl mx-auto">
+                <div class="timeline-item">
+                    <div class="floating-card bg-gradient-to-br from-blue-50 to-green-50 p-6 rounded-xl shadow-md border border-blue-100">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-2">
+                            <h3 class="text-xl font-bold text-gray-800">Bachelor of Commerce</h3>
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium mt-2 md:mt-0">06/2019 - 04/2022</span>
+                        </div>
+                        <h4 class="text-lg text-gray-700 mb-1">Siddharth College of Arts, Science and Commerce</h4>
+                        <p class="text-gray-600">Mumbai</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="floating-card bg-gradient-to-br from-blue-50 to-green-50 p-6 rounded-xl shadow-md border border-blue-100">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-2">
+                            <h3 class="text-xl font-bold text-gray-800">H.S.C</h3>
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium mt-2 md:mt-0">06/2017 - 04/2019</span>
+                        </div>
+                        <h4 class="text-lg text-gray-700 mb-1">Siddharth College of Arts, Commerce and Science</h4>
+                        <p class="text-gray-600">Mumbai</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="floating-card bg-gradient-to-br from-blue-50 to-green-50 p-6 rounded-xl shadow-md border border-blue-100">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-2">
+                            <h3 class="text-xl font-bold text-gray-800">S.S.C (Maharashtra Board)</h3>
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium mt-2 md:mt-0">06/2007 - 04/2017</span>
+                        </div>
+                        <h4 class="text-lg text-gray-700 mb-1">Rosary High School</h4>
+                        <p class="text-gray-600">Mumbai</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gradient-to-br from-blue-600 to-purple-700 text-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold mb-12 text-center">Get In Touch</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6">Let's Work Together</h3>
+                        <p class="text-lg mb-6 text-blue-100">
+                            I'm always interested in new opportunities and challenges. Whether you have a project in mind or just want to connect, feel free to reach out.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div class="bg-white bg-opacity-20 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-envelope text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold">Email</p>
+                                    <p class="text-blue-100">contact@aliqureshi.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-white bg-opacity-20 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-map-marker-alt text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold">Location</p>
+                                    <p class="text-blue-100">Mumbai, India</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-4 mt-8">
+                            <a href="#" class="bg-white text-blue-600 p-3 rounded-lg hover:bg-gray-100 transition duration-300">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="bg-white text-blue-600 p-3 rounded-lg hover:bg-gray-100 transition duration-300">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="bg-white text-blue-600 p-3 rounded-lg hover:bg-gray-100 transition duration-300">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="bg-white text-gray-800 p-8 rounded-2xl shadow-lg">
+                        <form id="contact-form">
+                            <div class="mb-6">
+                                <label for="name" class="block mb-2 font-medium">Your Name</label>
+                                <input type="text" id="name" class="w-full px-4 py-3 contact-input border border-gray-300 focus:border-blue-500" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="email" class="block mb-2 font-medium">Your Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 contact-input border border-gray-300 focus:border-blue-500" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="subject" class="block mb-2 font-medium">Subject</label>
+                                <input type="text" id="subject" class="w-full px-4 py-3 contact-input border border-gray-300 focus:border-blue-500" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="message" class="block mb-2 font-medium">Message</label>
+                                <textarea id="message" rows="5" class="w-full px-4 py-3 contact-input border border-gray-300 focus:border-blue-500" required></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 transform hover:-translate-y-1">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-2xl font-bold">Ali Qureshi</h3>
+                    <p class="text-gray-400 mt-2">PHP Developer</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#home" class="text-gray-400 hover:text-white transition duration-300">Home</a>
+                    <a href="#about" class="text-gray-400 hover:text-white transition duration-300">About</a>
+                    <a href="#projects" class="text-gray-400 hover:text-white transition duration-300">Projects</a>
+                    <a href="#contact" class="text-gray-400 hover:text-white transition duration-300">Contact</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 Ali Qureshi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            // Preloader
+            $(window).on('load', function() {
+                $('.preloader').fadeOut('slow');
+            });
+            
+            // Progress Bar
+            $(window).scroll(function() {
+                var wintop = $(window).scrollTop();
+                var docheight = $(document).height();
+                var winheight = $(window).height();
+                var scrolled = (wintop / (docheight - winheight)) * 100;
+                $('.progress-bar').css('width', (scrolled + '%'));
+            });
+            
+            // Mobile menu toggle
+            $('#menu-toggle').click(function() {
+                $('#mobile-menu').slideToggle();
+            });
+            
+            // Smooth scrolling for navigation links
+            $('a[href="ALI_RESUME.pdf"]').not('#download-resume, #download-resume-mobile').on('click', function(e) {
+                e.preventDefault();
+                
+                $('html, body').animate(
+                    {
+                        scrollTop: $($(this).attr('href')).offset().top - 80,
+                    },
+                    800,
+                    'easeInOutCubic'
+                );
+                
+                // Close mobile menu after clicking a link
+                $('#mobile-menu').hide();
+            });
+            
+            // Navbar background on scroll
+            $(window).scroll(function() {
+                if ($(window).scrollTop() > 50) {
+                    $('nav').addClass('bg-white shadow-md py-3');
+                    $('nav').removeClass('py-4');
+                } else {
+                    $('nav').removeClass('bg-white shadow-md py-3');
+                    $('nav').addClass('py-4');
+                }
+            });
+            
+            // Animate skill bars when they come into view
+            function animateSkillBars() {
+                $('.skill-progress').each(function() {
+                    var skillValue = $(this).data('width');
+                    var elementPos = $(this).offset().top;
+                    var screenPos = $(window).scrollTop() + $(window).height() * 0.9;
+                    
+                    if (elementPos < screenPos) {
+                        $(this).css('width', skillValue + '%');
+                    }
+                });
+            }
+            
+            // Animate counters when they come into view
+            function animateCounters() {
+                $('.counter').each(function() {
+                    var $this = $(this);
+                    var target = $this.data('target');
+                    var elementPos = $this.offset().top;
+                    var screenPos = $(window).scrollTop() + $(window).height() * 0.9;
+                    
+                    if (elementPos < screenPos && !$this.hasClass('counted')) {
+                        $this.addClass('counted');
+                        $({ countNum: 0 }).animate({ countNum: target }, {
+                            duration: 2000,
+                            easing: 'swing',
+                            step: function() {
+                                $this.text(Math.floor(this.countNum));
+                            },
+                            complete: function() {
+                                $this.text(target);
+                            }
+                        });
+                    }
+                });
+            }
+            
+            // Initial check on page load
+            animateSkillBars();
+            animateCounters();
+            
+            // Check on scroll
+            $(window).scroll(function() {
+                animateSkillBars();
+                animateCounters();
+            });
+            
+            // Project filtering
+            $('.project-filter-btn').click(function() {
+                $('.project-filter-btn').removeClass('active bg-blue-600 text-white');
+                $('.project-filter-btn').addClass('bg-white text-gray-700');
+                $(this).addClass('active bg-blue-600 text-white');
+                $(this).removeClass('bg-white text-gray-700');
+                
+                var filter = $(this).data('filter');
+                
+                if (filter === 'all') {
+                    $('.project-item').fadeIn(500);
+                } else {
+                    $('.project-item').each(function() {
+                        if ($(this).data('category') === filter) {
+                            $(this).fadeIn(500);
+                        } else {
+                            $(this).fadeOut(500);
+                        }
+                    });
+                }
+            });
+            
+            // Contact form submission
+            $('#contact-form').submit(function(e) {
+                e.preventDefault();
+                alert('Thank you for your message! I will get back to you soon.');
+                $('#contact-form')[0].reset();
+            });
+            
+            // Scroll indicator
+            $('#scroll-indicator').click(function() {
+                $('html, body').animate({
+                    scrollTop: $('#about').offset().top - 80
+                }, 800);
+            });
+            
+            // Typewriter effect
+            function typeWriter(element, text, speed) {
+                let i = 0;
+                element.innerHTML = '';
+                
+                function type() {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    }
+                }
+                
+                type();
+            }
+            
+            // Initialize typewriter
+            const typewriterElement = document.getElementById('typewriter');
+            typeWriter(typewriterElement, 'PHP Developer', 100);
+            
+            // Download resume functionality
+            $('#download-resume, #download-resume-mobile').click(function(e) {
+                e.preventDefault();
+                alert('Resume download would start now. In a real implementation, this would download your resume PDF.');
+                // In a real implementation, you would link to your actual resume file
+                // window.location.href = 'ALI_RESUME.pdf';
+                window.open('ALI_RESUME.pdf','_blank');
+            });
+        });
+    </script>
+</body>
+</html>
